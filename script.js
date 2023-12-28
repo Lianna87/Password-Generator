@@ -3,7 +3,6 @@ var specialCharacters = [
   '@',
   '%',
   '+',
-  '\\',
   '/',
   "'",
   '!',
@@ -89,71 +88,82 @@ var upperCasedCharacters = [
 ];
 
 // array of all available characters
-let allCharacters = [upperCasedCharacters, lowerCasedCharacters, numericCharacters, specialCharacters];
+// let allCharacters = [upperCasedCharacters, lowerCasedCharacters, numericCharacters, specialCharacters];
 
 // console.log (allCharacters)
 
 
 // Function to prompt user for password options
-function chooseLength () {
-//prompt for password length
-let passLength = prompt (`How many characters do you want in your password?`);
-// prompted data string parsed into number
-passLength = parseInt (passLength);
-// check if password length is 8 and 128
-  // if out of lenght range, message use: must be between 8 and 24
-if (passLength < 8 || passLength > 128) {
-  alert (`Invalid password length. Please choose a number between 8 and 128`);
-  // return out of function or call function again
-}
-}
-
-
-let upperCase = confirm (`Do you want to use uppercase letters in your password?`);
-let lowerCase = confirm (`Do you want to use lowercase letters in your password?`);
-let numbericChar = confirm (`Do you want to use numbers in your password?`);
-let specialChar = confirm (`Do you want to use special characters in your password?`);
-
-// validate that at least one character type has been selected
-  // if all false, message user: must choose at least 1
-if (!(upperCase || lowerCase || numbericChar || specialChar)) {
-  alert (`Please select at least one character type`);
-  // return out of function or call function again
-}
-
-
-// Confirm which character sets to use
-
-
-// Once they select a character set:
-  // Generate a random character for each selected character set
-  // Either push selected character sets to a mega-array of all selected characters
-  // OR you can keep the arrays separate and generate a random number to select the array and another to select the index
+function getPasswordOptions () {
+  //prompt for password length
+  let passLength = prompt (`How many characters do you want in your password?`);
+  // prompted data string parsed into number
+  passLength = parseInt (passLength);
+  // check if password length is 8 and 128
+    // if out of lenght range, alter user (must be between 8 and 24) and return out of function
+  if (passLength < 8 || passLength > 128) {
+    alert (`Invalid password length. Please choose a number between 8 and 128`);
+    return;
+  }
+  console.log (passLength)
   
-  // Once character sets are selected, move on to generating random characters
+  let selectUppercase = confirm (`Do you want to use uppercase letters in your password?`);
+  let selectLowercase = confirm (`Do you want to use lowercase letters in your password?`);
+  let selectNumericChar = confirm (`Do you want to use numbers in your password?`);
+  let selectSpecialChar = confirm (`Do you want to use special characters in your password?`);
 
+    var characterArray = []
 
-// function getPasswordOptions () {
-//   let selectUppercase = false;
-//   let selectLowerrcase = false;
-//   let selectNumber = false;
-//   let selectSpecialCharacter = false;
-//   let length = parseInt (prompt (`How many characters does your password have?`));
-//   if (length < 8 || length > 128) {
-//     alert (`Please choose a number between 8 and 128`)
-//   }
-// }
+  if (selectUppercase) {
+    characterArray = characterArray.concat (upperCasedCharacters)
+  }
+  if (selectLowercase) {
+    characterArray = characterArray.concat (lowerCasedCharacters)
+  }
+  if (selectNumericChar) {
+    characterArray = characterArray.concat (numericCharacters)
+  }
+  if (selectSpecialChar) {
+    characterArray = characterArray.concat (specialCharacters)
+  }
 
+  // validate that at least one character type has been selected
+  if (characterArray.length === 0) {
+    alert (`Please select at least one character type`);
+    return;
+  }
 
-// Function for getting a random element from an array
-function getRandom(arr) {
+   console.log (characterArray)
 
+   let randomCharacter = getRandom(characterArray, passLength)
+  console.log (randomCharacter)
+   return randomCharacter
 }
+
+
+// Function for getting a random element from an array, once a character set has been selected
+function getRandom(arr, passLength) {
+  console.log (passLength)
+
+  var password = ""
+
+  for (var i = 0; i < passLength; i++) {
+    var index = Math.floor (Math.random () * arr.length)
+    var character = arr[index]
+    console.log (character)
+    password = password.concat (character)
+    console.log (password)
+  }
+  return password
+}
+
 
 // Function to generate password with user input
 function generatePassword() {
-  getPasswordOptions
+  return getPasswordOptions()
 }
+
+
 
 // Get references to the #generate element
 var generateBtn = document.querySelector('#generate');
